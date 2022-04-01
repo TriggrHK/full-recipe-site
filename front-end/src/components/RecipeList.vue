@@ -4,13 +4,14 @@
     <div class="item" v-for="item in items" :key="item.id">
 
         <div class="image">
-          <img :src="require('../images/recipes/' +item.image)">
+          <!--<img :src="require('../images/recipes/' +item.image)">-->
+          <img :src="item.path">
         </div>
 
         <div class="info">
           <h2>{{item.name}}</h2>
-          <p>Difficulty: {{item.difficulty}}</p>
-          <p>Total Time: {{item.hoursToMake}} hr</p>
+          <p>Difficulty: {{item.diff}}</p>
+          <p>Total Time: {{item.hours}} hr</p>
         </div>
     </div>
   </div>

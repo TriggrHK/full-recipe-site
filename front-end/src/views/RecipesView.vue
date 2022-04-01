@@ -3,13 +3,13 @@
 
   <div class="page section">
     <h1>Welcome to Chef Heath's Cook-Book</h1>
-    <RecBar></RecBar>
+    <RecBar />
 
     <h2>Categories of Recipies</h2>
     <Categories/>
 
     <h2>Here is {{CurrentCat}}</h2>
-    <RecipeList :items="items"/>
+    <RecipeList :items="sortedRecipes"/>
 
     <Footer/>
   </div>
@@ -18,6 +18,7 @@
 
 
 <script>
+import axios from 'axios'
 import Footer from "../components/Footer.vue"
 import RecBar from "../components/RecommendationBar.vue"
 import Categories from "../components/Categories.vue"
@@ -30,17 +31,36 @@ export default {
     Categories,
     RecipeList,
   },
+  data() {
+    return {
+      recipes: [],
+    }
+  },
+  created() {
+    this.getRecipes();
+  },
   computed: {
     CurrentCat() {
       return this.$root.$data.currentCat
     },
-    items() {
+    sortedRecipes() {
       if(this.$root.$data.currentCat == "All Foods"){
-        return this.$root.$data.items
+        return this.recipes
       } else {
-        return this.$root.$data.items.filter(item => item.category == this.$root.$data.currentCat)
+        return this.recipes.filter(item => item.category == this.$root.$data.currentCat)
       }
     },
+  },
+  methods: {
+    async getRecipes() {
+      try {
+        let response = await axios.get('/api/recipes');
+	this.recipes = response.data;
+	return true;
+      } catch (error) {
+        console.log(error);
+      }
+    }
   }
 }
 </script>
